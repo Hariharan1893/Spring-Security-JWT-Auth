@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/")
 public class HomeController {
 
+  // Used: Method level security for role based authorization
+
   @GetMapping
   public String greetings() {
     return "Welcome to the Home page....";

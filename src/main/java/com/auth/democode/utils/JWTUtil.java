@@ -15,10 +15,13 @@ import io.jsonwebtoken.security.Keys;
 @Component
 public class JWTUtil {
 
+    // Expiration time for the Jwt token - sets to 1 hour
     private static final long EXPIRATION_TIME = 3600000;
 
+    // Secret which is like an key for encryption of our jwt token
     private static final String SECRET = "my-strong-secret-key-1893@#-you-can-change-for-your-own";
 
+    // Key is generated using the HMAC-SHA algorithms - this key should be 32bit
     private final SecretKey key = Keys.hmacShaKeyFor(SECRET.getBytes());
 
     // To: Generate the JWT Token
@@ -33,8 +36,16 @@ public class JWTUtil {
                 .compact();
     }
 
-    // Extract Claims
+    // To: Validate the JWT Token
+    public boolean validateToken(String username, UserDetails userDetails, String token) {
+        // To: Check if username is same as username in userdetails
+        // To: check if token is not expired
 
+        return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
+
+    }
+
+    // To: Extract Claims
     private Claims extractClaims(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(key)
@@ -53,11 +64,4 @@ public class JWTUtil {
         return extractClaims(token).getExpiration().before(new Date());
     }
 
-    public boolean validateToken(String username, UserDetails userDetails, String token) {
-        // To: Check if username is same as username in userdetails
-        // To: check if token is not expired
-
-        return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
-
-    }
 }

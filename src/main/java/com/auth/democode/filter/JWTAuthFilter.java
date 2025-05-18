@@ -27,6 +27,9 @@ public class JWTAuthFilter extends OncePerRequestFilter {
     @Autowired
     CustomUserDetailService customUserDetailService;
 
+    // To: Make our own jwt filter to extract the token and verify its signature and
+    // stores on the security context
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
@@ -46,7 +49,7 @@ public class JWTAuthFilter extends OncePerRequestFilter {
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
             // To: validte token
-            // To: Fetch user by username
+            // To: Fetch user by username to verify the presence in db
             UserDetails userDetails = customUserDetailService.loadUserByUsername(username);
 
             if (jwtUtil.validateToken(username, userDetails, token)) {
